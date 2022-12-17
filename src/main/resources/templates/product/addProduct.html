@@ -1,0 +1,75 @@
+<div lang="en" th:replace="fragments/header :: head('Добавление товара')"> </div>
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h3 class="text-center pb-3">Добавление товара: </h3>
+
+        <form th:method="POST" th:action="@{/admin/product/add}" th:object="${product}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Введите наименование</label>
+                <input class="form-control" type="text" th:field="*{title}" placeholder="Наименование" id="title">
+                <div style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+            </div>
+
+            <div class="form-group mt-2">
+                <label for="description">Введите описание</label>
+                <textarea  class="form-control" rows="3" th:field="*{description}" placeholder="Описание" id="description"></textarea>
+                <div style="color: red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="price">Введите цену</label>
+                        <input class="form-control" type="number" th:field="*{price}" min="0" step="100.00" id="price">
+                        <div style="color: red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="warehouse">Введите информацию о складе</label>
+                        <input  class="form-control" type="text" th:field="*{warehouse}" placeholder="Склад" id="warehouse">
+                        <div style="color: red" th:if="${#fields.hasErrors('warehouse')}" th:errors="*{warehouse}"></div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="category">Выберите категорию товара</label>
+                        <select class="form-control" name="category" th:field="*{category}" id="category">
+                            <option th:each="element : ${category}" th:text="${element.getName()}" th:value="${element.getId()}"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="seller">Введите данные о продавце</label>
+                        <textarea class="form-control" th:field="*{seller}" placeholder="Продавец" id="seller"></textarea>
+                        <div style="color: red" th:if="${#fields.hasErrors('seller')}" th:errors="*{seller}"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-danger mt-2" role="alert">
+                Вы можете добавить до 5 фотографий. Первая фотография не может быть пустой
+            </div>
+
+            <input type="file" name="file_one">
+            <input type="file" name="file_two">
+            <input type="file" name="file_three">
+            <input type="file" name="file_four">
+            <input type="file" name="file_five">
+            <br>
+
+            <button type="submit" class="btn btn-primary mt-2">Добавить</button>
+        </form>
+
+    </div>
+</section>
+
+
+
+<div lang="en" th:replace="fragments/footer :: footer"> </div>

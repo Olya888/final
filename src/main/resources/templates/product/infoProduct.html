@@ -1,0 +1,38 @@
+<div lang="en" th:replace="fragments/header :: head('Информация о продукте')"> </div>
+
+<section class="py-3">
+    <div class="container px-4 px-lg-5 mb-5">
+        <div class="alert alert-info" role="alert" th:if="${role == null}">
+            Авторизуйтесь чтобы добавить товар в корзину
+        </div>
+        <div class="row gx-4 gx-lg-5 align-items-top">
+            <div class="col-md-6">
+                <img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..." th:if="${#arrays.isEmpty(product.getImageList())}">
+                <div class="mb-3 d-block text-center" th:each="img : ${product.getImageList()}" th:if="${!#arrays.isEmpty(product.getImageList())}">
+                    <img class="d-block w-100" alt="..." th:src="'/img/' + ${img.getFileName()}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="small mb-1">SKU: BST-498</div>
+                <h1 class="display-5 fw-bolder" th:text="${product.getTitle()}"></h1>
+                <div class="fs-5 mb-5">
+                    <span th:text="${product.getPrice()} + ' р.'"></span>
+                </div>
+                <p class="text-muted small" th:text="'Склад: ' + ${product.getWarehouse()}"></p>
+                <p class="text-muted small" th:text="'Продавец: ' + ${product.getSeller()}"></p>
+                <p class="text-muted small" th:text="'Категория: ' + ${product.getCategory().getName()}"></p>
+
+                <p class="lead" th:text="${product.getDescription()}"></p>
+                <div class="d-flex">
+                    <div class="text-center">
+                        <a class="btn btn-outline-dark flex-shrink-0" th:href="@{/cart/add/{id}(id=${product.getId()})}" th:if="${role == 'ROLE_USER'}"><i class="bi-cart-fill me-1"></i> В корзину</a>
+                        <a class="btn btn-primary mt-auto text-decoration-none" th:href="@{/admin/product/edit/{id}(id=${product.getId()})}" th:if="${role == 'ROLE_ADMIN'}">Редактировать</a>
+                        <a class="btn btn-outline-danger mt-auto text-decoration-none" th:href="@{/admin/product/delete/{id}(id=${product.getId()})}" th:if="${role == 'ROLE_ADMIN'}">Удалить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div lang="en" th:replace="fragments/footer :: footer"> </div>

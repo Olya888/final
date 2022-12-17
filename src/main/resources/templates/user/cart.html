@@ -1,0 +1,45 @@
+<div lang="en" th:replace="fragments/header :: head('Корзина')"> </div>
+
+<section class="py-3">
+    <div class="container px-4 px-lg-5">
+        <h3 class="text-start pb-3">Корзина товаров</h3>
+        <table class="table table-borderless" th:if="${!#arrays.isEmpty(cart_product)}">
+            <thead>
+            <tr>
+                <th></th>
+                <th scope="col">Название товара</th>
+                <th scope="col">Цена</th>
+                <th scope="col">Кол-во</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${cart_product}">
+                <td class="text-end">
+                    <img height="50px" th:src="'/img/' + ${product.imageList[0].getFileName()}" th:if="${!#arrays.isEmpty(product.imageList)}" />
+                    <img height="50px" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" th:if="${#arrays.isEmpty(product.imageList)}" />
+                </td>
+                <td>
+                    <a th:href="@{/product/info/{id}(id=${product.getId()})}" class="text-decoration-none" th:text="${product.getTitle()}"></a>
+                </td>
+                <td th:text="${product.getPrice()} + ' руб.'"></td>
+                <td>1</td>
+                <td>
+                    <a class="btn btn-link mt-auto text-decoration-none" th:href="@{/cart/delete/{id}(id=${product.getId()})}" th:if="${role != null}">Удалить из корзины</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="alert alert-info" role="alert" th:if="${#arrays.isEmpty(cart_product)}">
+            Корзина пустая
+        </div>
+
+        <div class="text-center mt-5">
+            <a class="btn btn-outline-success" href="/order/create" th:if="${!#arrays.isEmpty(cart_product)}">Оформить заказ</a>
+        </div>
+
+    </div>
+</section>
+
+<div lang="en" th:replace="fragments/footer :: footer"> </div>

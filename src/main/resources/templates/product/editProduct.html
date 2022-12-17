@@ -1,0 +1,61 @@
+<div lang="en" th:replace="fragments/header :: head('Редактирование товара')"> </div>
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h3 class="text-center pb-3">Редактирование товара: </h3>
+
+        <form th:method="POST" th:action="@{/admin/product/edit/{id}(id=${editProduct.getId()})}" th:object="${editProduct}">
+            <div class="form-group">
+                <label for="title">Введите наименование</label>
+                <input class="form-control" type="text" th:field="*{title}" placeholder="Наименование" id="title">
+                <div style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+            </div>
+
+            <div class="form-group mt-2">
+                <label for="description">Введите описание</label>
+                <textarea  class="form-control" rows="3" th:field="*{description}" placeholder="Описание" id="description"></textarea>
+                <div style="color: red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="price">Введите цену</label>
+                        <input class="form-control" type="number" th:field="*{price}" min="0" step="100.00" id="price">
+                        <div style="color: red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="warehouse">Введите информацию о складе</label>
+                        <input  class="form-control" type="text" th:field="*{warehouse}" placeholder="Склад" id="warehouse">
+                        <div style="color: red" th:if="${#fields.hasErrors('warehouse')}" th:errors="*{warehouse}"></div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="category">Выберите категорию товара</label>
+                        <select class="form-control" name="category" th:field="*{category}" id="category">
+                            <option th:each="element : ${category}" th:text="${element.getName()}" th:value="${element.getId()}"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="seller">Введите данные о продавце</label>
+                        <textarea class="form-control" th:field="*{seller}" placeholder="Продавец" id="seller"></textarea>
+                        <div style="color: red" th:if="${#fields.hasErrors('seller')}" th:errors="*{seller}"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-2">Редактировать</button>
+        </form>
+    </div>
+</section>
+
+<div lang="en" th:replace="fragments/footer :: footer"> </div>

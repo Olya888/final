@@ -1,0 +1,46 @@
+<div lang="en" th:replace="fragments/header :: head('Личный кабинет администратора')"> </div>
+
+<div lang="en" th:replace="fragments/topBanner :: header('Личный кабинет администратора')"> </div>
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h3 class="text-center pb-3">Каталог товаров: </h3>
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            <div class="col-12 col-sm-6 col-md-4 mb-5" th:each="product : ${products}">
+                <div class="card h-100">
+                    <div class="card-img-wrapper">
+                        <img class="card-img-top img-fluid" th:src="'/img/' + ${product.imageList[0].getFileName()}" th:if="${!#arrays.isEmpty(product.imageList)}" />
+                        <img class="card-img-top img-fluid" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" th:if="${#arrays.isEmpty(product.imageList)}" />
+                    </div>
+                    <div class="card-body py-4">
+                        <div class="text-center">
+                            <a th:href="@{/product/info/{id}(id=${product.getId()})}" class="text-decoration-none">
+                                <h5 class="fw-bolder" th:text="${product.getTitle()}"></h5>
+                            </a>
+                            <div class="d-flex justify-content-center small text-warning mb-2">
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                            </div>
+                            <div class="small" th:text="${product.getPrice()} + ' руб.'"></div>
+                            <div class="small text-muted" th:text="'Склад: ' + ${product.getWarehouse()}"></div>
+                            <div class="small text-muted" th:text="'Продавец: ' + ${product.getSeller()}"></p>
+                            <div class="small text-muted" th:text="'Категория товара: ' + ${product.getCategory().getName()}"></div>
+                        </div>
+                    </div>
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center mt-3">
+                            <a class="btn btn-primary mt-auto text-decoration-none" th:href="@{/admin/product/edit/{id}(id=${product.getId()})}" >Редактировать</a>
+                            <a class="btn btn-outline-danger mt-auto text-decoration-none" th:href="@{/admin/product/delete/{id}(id=${product.getId()})}">Удалить</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<div lang="en" th:replace="fragments/footer :: footer"> </div>

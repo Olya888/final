@@ -1,0 +1,118 @@
+<div lang="en" th:replace="fragments/header :: head('Поиск продуктов')"> </div>
+
+<div lang="en" th:replace="fragments/topBanner :: header('Shop in style')"> </div>
+
+<div class="container border-bottom">
+    <div class="collapse" id="collapseExample">
+        <form th:method="POST" th:action="@{/product/search}">
+            <fieldset>
+                <h2 class="mt-2">Выберите параметры для сортировки, поиска, фильтрации</h2>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <input class="form-control form-control-sm shadow-none mb-2 mb-sm-0" type="text" name="search" placeholder="Поиск по наименованию" th:value="*{filter_name}">
+                    </div>
+                    <div class="col-sm-2">
+                        <input class="form-control form-control-sm shadow-none mb-2 mb-sm-0" type="text"  name="ot" placeholder="Минимальная цена ₽" th:value="*{filter_price_from}">
+                    </div>
+                    <div class="col-sm-2">
+                        <input class="form-control form-control-sm shadow-none mb-2 mb-sm-0" type="text"  name="do" placeholder="Максимальная цена ₽" th:value="*{filter_price_to}">
+                    </div>
+                    <div class="col-sm-3">
+                        <select class="form-control form-control-sm shadow-none mb-2 mb-sm-0" name="category">
+                            <option value="">Категория:</option>
+                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}" th:selected="${filter_category == category.id}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="price" value="sorted_by_ascending_price" id="exampleRadios1" th:checked="${filter_sort == 'sorted_by_ascending_price'}">
+                            <label class="form-check-label" for="exampleRadios1">
+                                Отсортировать по возрастанию цены
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio"  name="price" value="sorted_by_descending_price" id="exampleRadios2" th:checked="${filter_sort == 'sorted_by_descending_price'}">
+                            <label class="form-check-label" for="exampleRadios2">
+                                Отсортировать по убыванию цены
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Найти</button>
+            </fieldset>
+        </form>
+    </div>
+    <p>
+        <a class="btn btn-link text-dark text-decoration-none mt-3 shadow-none" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Показать/скрыть фильтры
+        </a>
+    </p>
+</div>
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h3 th:if="${!#strings.isEmpty(filter_price_from)}" class="text-center pb-3">Результат поиска: </h3>
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            <div class="col-12 col-sm-6 col-md-4 mb-5" th:each="product : ${products}" th:if="${#strings.isEmpty(filter_price_from)}">
+                <div class="card h-100">
+                    <div class="card-img-wrapper">
+                        <img class="card-img-top img-fluid" th:src="'/img/' + ${product.imageList[0].getFileName()}" th:if="${!#arrays.isEmpty(product.imageList)}" />
+                        <img class="card-img-top img-fluid" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" th:if="${#arrays.isEmpty(product.imageList)}" />
+                    </div>
+                    <div class="card-body py-4">
+                        <div class="text-center">
+                            <a th:href="@{/product/info/{id}(id=${product.getId()})}" class="text-decoration-none">
+                                <h5 class="fw-bolder" th:text="${product.getTitle()}"></h5>
+                            </a>
+                            <div class="d-flex justify-content-center small text-warning mb-2">
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                            </div>
+                            <div th:text="${product.getPrice()} + ' руб.'"></div>
+                        </div>
+                    </div>
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center">
+                            <a class="btn btn-outline-dark mt-auto" th:href="@{/cart/add/{id}(id=${product.getId()})}" th:if="${role != null}">В корзину</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 mb-5" th:each="product : ${search_product}" th:if="${!#strings.isEmpty(filter_price_from)}">
+                <div class="card h-100">
+                    <div class="card-img-wrapper">
+                        <img class="card-img-top img-fluid" th:src="'/img/' + ${product.imageList[0].getFileName()}" th:if="${!#arrays.isEmpty(product.imageList)}" />
+                        <img class="card-img-top img-fluid" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" th:if="${#arrays.isEmpty(product.imageList)}" />
+                    </div>
+                    <div class="card-body py-4">
+                        <div class="text-center">
+                            <a th:href="@{/product/info/{id}(id=${product.getId()})}" class="text-decoration-none">
+                                <h5 class="fw-bolder" th:text="${product.getTitle()}"></h5>
+                            </a>
+                            <div class="d-flex justify-content-center small text-warning mb-2">
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                            </div>
+                            <div th:text="${product.getPrice()} + ' руб.'"></div>
+                        </div>
+                    </div>
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center">
+                            <a class="btn btn-outline-dark mt-auto" th:href="@{/cart/add/{id}(id=${product.getId()})}" th:if="${role != null}">В корзину</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div lang="en" th:replace="fragments/footer :: footer"> </div>

@@ -1,0 +1,16 @@
+.card-img-wrapper {
+    height: 220px;
+    overflow: hidden;
+}
+
+.card.h-100 {
+    transition: all .3s ease;
+}
+
+.card.h-100:hover {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+section {
+    min-height: calc(100% - 180px);
+}
